@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { CounterComponent } from './pages/counter/counter.component';
 import { MePerdonas } from './pages/meperdonas/page/meperdonas.component';
+import { SubirArchivo } from './pages/prediccion/subirArchivo/subirArchivo.component';
 
 export const routes: Routes = [
 
@@ -11,5 +12,9 @@ export const routes: Routes = [
     {
         path: 'contador',
         component: CounterComponent
+    },
+    {
+        path: 'prediccion',
+        component:SubirArchivo
     }
 ];
