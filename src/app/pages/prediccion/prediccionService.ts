@@ -16,7 +16,7 @@ export interface Prediccion {
 
 export class PrediccionService {
 
-    private urlApi = environment.apiUrl + '/api/modelo/predecir'
+    private urlApi = '/api/modelo/predecir'
 
     constructor(private http: HttpClient){}
 
