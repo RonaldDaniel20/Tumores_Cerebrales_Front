@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { environment } from "../../../environments/environment";
+import { environment } from "../../../../environments/environment";
 
 export interface Prediccion {
     status: string,
@@ -16,7 +16,7 @@ export interface Prediccion {
 
 export class PrediccionService {
 
-    private urlApi = '/api/modelo/predecir'
+    private urlApi = environment.apiUrl + '/api/modelo/predecir';
 
     constructor(private http: HttpClient){}
 
@@ -26,5 +26,4 @@ export class PrediccionService {
 
         return this.http.post<Prediccion>(this.urlApi, formData)
     }
-    
 }

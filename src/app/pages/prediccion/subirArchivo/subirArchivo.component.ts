@@ -1,5 +1,6 @@
 import { Component, signal, Signal } from "@angular/core";
-import { Prediccion, PrediccionService } from "../prediccionService";
+import { Prediccion, PrediccionService } from "../services/prediccionService";
+import { NotificationService } from "../../../share/service/notification.service";
 
 @Component({
     templateUrl: './subirArchivo.component.html'
@@ -8,7 +9,6 @@ import { Prediccion, PrediccionService } from "../prediccionService";
 export class SubirArchivo {
     selectedFile: File | null = null
     imagePreview: string | ArrayBuffer | null = null
-    message = signal('')
     isResultAvailable = signal<boolean>(false)
     prediccion = signal<Prediccion>({
         status: '',
@@ -17,11 +17,8 @@ export class SubirArchivo {
         confianza: '' 
     });
 
-    tipo_tumor = signal<string>('')
-    confianza = signal<string>('')
 
-
-    constructor(private prediccionService: PrediccionService){}
+    constructor(private prediccionService: PrediccionService, private notificationService: NotificationService){}
     
     onFileSelected(event: any): void {
         const file: File = event.target.files[0];
@@ -33,11 +30,9 @@ export class SubirArchivo {
 
     getPrediccion(): void {
         if(!this.selectedFile){
-            this.message.set('No ha seleccionado ningún archivo')
+            this.notificationService.mostrarInformacion('Por favor, seleccione un archivo antes de continuar', 'error');
             return
         }
-
-        this.message.set('')
 
         this.prediccionService.getPrediccion(this.selectedFile).subscribe({
             next: (response) => {
@@ -47,6 +42,7 @@ export class SubirArchivo {
             },
             error: (err) => {
                 console.error(err)
+                this.notificationService.mostrarInformacion('Ocurrió un error al procesar la imagen', 'error');
                 this.limpiarCampos()
             }
         })
