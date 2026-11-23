@@ -1,0 +1,8 @@
+<div class="flex flex-col w-64 h-full bg-slate-950 p-8 gap-10 overflow-y-auto">
+    <gifs-side-menu-header />
+    <nav class="flex flex-col items-center justify-center gap-2">
+        @for(option of sideBarOptions; track option.route){
+            <gifs-side-menu-options [option]="option" />
+        }
+    </nav>
+</div>

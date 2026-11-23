@@ -1,8 +1,9 @@
 import { Component } from "@angular/core";
-import { SideBarComponent } from "../../components/sidebar.component";
+import { SideBarComponent } from "../../components/sidebar/sidebar.component";
+import { RouterOutlet } from "@angular/router";
 
 @Component({
-    imports: [SideBarComponent],
+    imports: [SideBarComponent, RouterOutlet],
     templateUrl: './dashboard-page.component.html',
 })
 
