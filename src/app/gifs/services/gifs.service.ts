@@ -4,6 +4,7 @@ import { environment } from "../../../environments/environment"
 import { GifsResponse } from "../interfaces/gifs-request.interface";
 import { Gif } from "../interfaces/gif.interface";
 import { GifMapper } from "../mapper/gif.mapper";
+import { finalize } from "rxjs";
 
 
 @Injectable({
@@ -21,6 +22,7 @@ export class GifService {
     //Metodo para obtener los gifs de la API
     getGifs(){
         const url: string =  `${environment.gifUrl}/gifs/trending`;
+
         this.http.get<GifsResponse>(url, {
                 params: {
                     api_key: environment.apikeyGif,

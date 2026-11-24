@@ -1,14 +1,9 @@
-import { Component } from "@angular/core";
+import { Component, signal, computed } from "@angular/core";
 import { GifListComponent } from "../../components/gif-list/gif-list.component";
+import { Gif } from "../../interfaces/gif.interface";
+import { GifService } from "../../services/gifs.service";
 
-@Component({
-    imports: [GifListComponent],
-    templateUrl: "./trending-page.component.html"
-})
-
-export default class TrendingPageComponent {
-
-    galleryImages: string[] = [
+const gallery: string[] = [
         "https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg",
         "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg",
         "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg",
@@ -22,5 +17,24 @@ export default class TrendingPageComponent {
         "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-10.jpg",
         "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-11.jpg",
     ];
+
+@Component({
+    imports: [GifListComponent],
+    templateUrl: "./trending-page.component.html"
+})
+
+export default class TrendingPageComponent {
+
+
+    constructor(private gifService: GifService){};
+
+    galleryGifs = computed<Gif[]>(() => {
+        return this.gifService.trendingGifs();
+    })
+
+    
+
+
+    
 
 }

@@ -1,5 +1,5 @@
 <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-    @for(url of urlsGifs(); track url){
-        <app-gif-list-item [urlGif]="url" />
+    @for(gif of Gifs(); track gif.url){
+        <app-gif-list-item [urlGif]="gif.url" />
     }
 </div>
