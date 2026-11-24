@@ -2,7 +2,7 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideHttpClient, withInterceptors, withFetch } from '@angular/common/http';
 import { SpinnerInterceptor } from './share/components/interceptors/spinner.interceptor';
 
 export const appConfig: ApplicationConfig = {
@@ -10,7 +10,8 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideHttpClient(
-      withInterceptors([SpinnerInterceptor])
+      withInterceptors([SpinnerInterceptor]),
+      withFetch()
     )
   ]
 };

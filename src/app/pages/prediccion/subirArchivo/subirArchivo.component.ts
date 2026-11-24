@@ -1,5 +1,5 @@
-import { Component, signal, Signal } from "@angular/core";
-import { Prediccion, PrediccionService } from "../services/prediccionService";
+import { Component, signal } from "@angular/core";
+import { Prediccion, PrediccionService } from "../services/prediccion.service";
 import { NotificationService } from "../../../share/service/notification.service";
 
 @Component({
@@ -40,9 +40,11 @@ export class SubirArchivo {
                 this.prediccion.set(response)
 
             },
-            error: (err) => {
-                console.error(err)
-                this.notificationService.mostrarInformacion('Ocurrió un error al procesar la imagen', 'error');
+            error: (err: unknown ) => {
+                if(err instanceof Error){
+                    console.error(err);
+                    this.notificationService.mostrarInformacion('Ocurrió un error al procesar la imagen', 'error');
+                }
                 this.limpiarCampos()
             }
         })
