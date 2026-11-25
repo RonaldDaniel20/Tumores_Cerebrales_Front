@@ -1,0 +1,21 @@
+<div class="flex flex-col p-5">
+    <h2 class="text-2xl font-bold">
+        Buscar Gifs
+    </h2>
+    <h1 class="text-sm text-gray-500">
+        Buscar Gif por nombre
+    </h1>
+
+    <section class="flex flex-col gap-4 mt-4">
+        <input 
+            class="border border-gray-300 rounded-md shadow-sm px-4 py-4 focus:outline-none focus:right-2"
+            placeholder="Buscar Gifs"
+            type="text"
+            (keyup.enter)="onBuscarGif(txtSearch.value)"
+            #txtSearch
+        >       
+    </section>
+    <section>
+        <app-gif-list [Gifs]="gifSearch()"/>
+    </section>
+</div>

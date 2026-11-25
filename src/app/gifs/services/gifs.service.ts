@@ -16,12 +16,18 @@ export class GifService {
     constructor(private http: HttpClient){
         this.getGifs();
     };
+    
+    private static readonly URLBASE = `${environment.gifUrl}`;
 
     trendingGifs = signal<Gif[]>([]);
-    
-    //Metodo para obtener los gifs de la API
-    getGifs(){
-        const url: string =  `${environment.gifUrl}/gifs/trending`;
+    searchGifStorage = signal<Gif[]>([]);
+
+    //========================================//
+    // Metodo para obtener los gifs de la API //
+    //========================================//
+
+    getGifs(): void{
+        const url: string =  `${GifService.URLBASE}/gifs/trending`;
 
         this.http.get<GifsResponse>(url, {
                 params: {
@@ -38,5 +44,30 @@ export class GifService {
                 console.error('Error al obtener los gifs:', error);
             }
         });
+    }
+
+    //========================================//
+    //  Metodo para buscar un GIF en la api   //
+    //========================================//
+
+    searchGifs(query: string): void{
+        const url = `${GifService.URLBASE}/gifs/search`;
+
+        this.http.get<GifsResponse>(url, {
+            params: {
+                api_key: environment.apikeyGif,
+                q: query,
+                limit: 20
+            }
+        }).subscribe({
+                next: (response: GifsResponse) => {
+                    const gifs: Gif[] = GifMapper.mapGifsResponseToGifs(response);
+                    this.searchGifStorage.set(gifs);
+                },
+                error: (error) => {
+                    console.error('Error al buscar el Gif', error);
+                }
+            }
+        )
     }
 }
