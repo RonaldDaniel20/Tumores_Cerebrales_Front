@@ -4,7 +4,7 @@ import { environment } from "../../../environments/environment"
 import { GifsResponse } from "../interfaces/gifs-request.interface";
 import { Gif } from "../interfaces/gif.interface";
 import { GifMapper } from "../mapper/gif.mapper";
-import { finalize } from "rxjs";
+import { finalize, Observable } from "rxjs";
 
 
 @Injectable({
@@ -20,7 +20,6 @@ export class GifService {
     private static readonly URLBASE = `${environment.gifUrl}`;
 
     trendingGifs = signal<Gif[]>([]);
-    searchGifStorage = signal<Gif[]>([]);
 
     //========================================//
     // Metodo para obtener los gifs de la API //
@@ -50,24 +49,15 @@ export class GifService {
     //  Metodo para buscar un GIF en la api   //
     //========================================//
 
-    searchGifs(query: string): void{
+    searchGifs(query: string): Observable<GifsResponse>{
         const url = `${GifService.URLBASE}/gifs/search`;
 
-        this.http.get<GifsResponse>(url, {
+        return this.http.get<GifsResponse>(url, {
             params: {
                 api_key: environment.apikeyGif,
                 q: query,
                 limit: 20
             }
-        }).subscribe({
-                next: (response: GifsResponse) => {
-                    const gifs: Gif[] = GifMapper.mapGifsResponseToGifs(response);
-                    this.searchGifStorage.set(gifs);
-                },
-                error: (error) => {
-                    console.error('Error al buscar el Gif', error);
-                }
-            }
-        )
+        })
     }
 }

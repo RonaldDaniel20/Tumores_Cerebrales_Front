@@ -1,8 +1,10 @@
-import { Component, computed } from "@angular/core";
+import { Component, signal } from "@angular/core";
 import { GifService } from "../../services/gifs.service";
 import { GifListComponent } from "../../components/gif-list/gif-list.component";
 import { Gif } from "../../interfaces/gif.interface";
-//import { GifsResponse } from "../../interfaces/gifs-request.interface";
+import { GifsResponse } from "../../interfaces/gifs-request.interface";
+import { GifMapper } from "../../mapper/gif.mapper";
+import { NotificationService } from "../../../share/service/notification.service";
 
 @Component({
     imports: [GifListComponent],
@@ -11,13 +13,21 @@ import { Gif } from "../../interfaces/gif.interface";
 
 export default class SearchPageComponent {
 
-    constructor(private gifService: GifService){};
+    constructor(private gifService: GifService, private notificacionService: NotificationService){};
 
-    gifSearch = computed<Gif[]>(() => {
-        return this.gifService.searchGifStorage();
-    })
+    gifSearch = signal<Gif[]>([]);
 
-    onBuscarGif(query: string): void {
-        this.gifService.searchGifs(query);
+    onBuscarGif(query: string){
+        this.gifService.searchGifs(query).subscribe({
+            next: (response: GifsResponse) => {
+                const gifs = GifMapper.mapGifsResponseToGifs(response);
+                this.gifSearch.set(gifs);
+            },
+            error: (error: unknown) => {
+                if(error instanceof Error){
+                    this.notificacionService.mostrarInformacion(`Ha sucedido un error ${error.message}`, 'error');
+                }
+            }
+        });
     }
 }
