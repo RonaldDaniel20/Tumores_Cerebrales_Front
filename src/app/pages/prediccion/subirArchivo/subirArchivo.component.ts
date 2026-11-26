@@ -41,7 +41,7 @@ export class SubirArchivo {
 
             },
             error: (err) => {
-                this.notificationService.mostrarInformacion(err.detail, "error");
+                this.notificationService.mostrarInformacion(err.error.detail, "error");
                 this.limpiarCampos()
             }
         })
