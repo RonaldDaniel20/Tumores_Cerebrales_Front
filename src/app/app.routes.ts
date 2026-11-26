@@ -27,7 +27,11 @@ export const routes: Routes = [
             },
             {
                 path: 'search',
-                loadComponent: () => import('./gifs/pages/search-page/search-page.component')
+                loadComponent: () => import('./gifs/pages/search-page/search-page.component'),
+            },                    
+            {
+                path:'history/:q',
+                loadComponent: () => import('./gifs/pages/gif-history/gif-history.component')
             }
         ]
     }

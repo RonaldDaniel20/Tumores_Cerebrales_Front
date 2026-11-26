@@ -1,0 +1,18 @@
+<div class="flex flex-col gap-2">
+    <div class="flex flex-row gap-2">
+        <div class="flex flex-col justify-center items-center">
+
+        </div>
+        <a
+            class="flex flex-row items-center hover:bg-slate-800 p-2 rounded-md transition-colors duration-200"
+            [routerLink]="['/dashboard/history', recordSearch()]"
+            routerLinkActive="bg-blue-800"
+            >
+            <div class="flex flex-col">
+                <p class="text-gray-100 font-bold">
+                    {{ recordSearch() }}
+                </p>
+            </div>
+        </a>
+    </div>
+</div>

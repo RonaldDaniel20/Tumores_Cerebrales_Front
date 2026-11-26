@@ -1,11 +1,14 @@
-import { Component } from "@angular/core";
+import { Component, computed } from "@angular/core";
 import { GifsSideMenuHeaderComponent } from "./header-sidebar/gifs-side-menu-header.component";
 import { GifsSideMenuOptionsComponent } from "./options-sidebar/gifs-side-menu-options.component";
 import { GifsSideMenuOptionsInterface } from "../../interfaces/gifs-side-menu-options-interface";
+import { GifService } from "../../services/gifs.service";
+//import { Gif } from "../../interfaces/gif.interface";
+import { RecordSearchComponent } from "./recordSearch-sidebar/recordSearch.component";
 
 @Component({
     selector: 'app-sidebar',
-    imports: [GifsSideMenuHeaderComponent, GifsSideMenuOptionsComponent],
+    imports: [GifsSideMenuHeaderComponent, GifsSideMenuOptionsComponent, RecordSearchComponent],
     templateUrl: './sidebar.component.html',
 })
 
@@ -32,4 +35,10 @@ export class SideBarComponent {
         }
     ]
 
+    constructor(private gifService: GifService){}
+
+    searchHistoryKeys = computed<string[]>(() => {
+            return this.gifService.searchHistoryKeys()
+        }
+    )
 }

@@ -5,6 +5,7 @@ import { Gif } from "../../interfaces/gif.interface";
 import { GifsResponse } from "../../interfaces/gifs-request.interface";
 import { GifMapper } from "../../mapper/gif.mapper";
 import { NotificationService } from "../../../share/service/notification.service";
+import { finalize } from "rxjs";
 
 @Component({
     imports: [GifListComponent],
@@ -18,7 +19,17 @@ export default class SearchPageComponent {
     gifSearch = signal<Gif[]>([]);
 
     onBuscarGif(query: string){
-        this.gifService.searchGifs(query).subscribe({
+        this.gifService.searchGifs(query)
+        .pipe(
+            finalize(() => {
+                const inputSearch = document.getElementById('input-search') as HTMLInputElement
+                if(inputSearch){
+                    inputSearch.value = ''
+                }
+
+            })
+        )
+        .subscribe({
             next: (response: Gif[]) => {
                 this.gifSearch.set(response);
             },

@@ -1,10 +1,10 @@
-import { Injectable, signal } from "@angular/core";
+import { computed, Injectable, signal } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../../environments/environment"
 import { GifsResponse } from "../interfaces/gifs-request.interface";
 import { Gif } from "../interfaces/gif.interface";
 import { GifMapper } from "../mapper/gif.mapper";
-import { finalize, map, Observable } from "rxjs";
+import { tap, map, Observable } from "rxjs";
 
 
 @Injectable({
@@ -20,6 +20,8 @@ export class GifService {
     private static readonly URLBASE = `${environment.gifUrl}`;
 
     trendingGifs = signal<Gif[]>([]);
+    searchHistory = signal<Record<string, Gif[]>>({});
+    searchHistoryKeys = computed(() => Object.keys(this.searchHistory()));
 
     //========================================//
     // Metodo para obtener los gifs de la API //
@@ -59,7 +61,20 @@ export class GifService {
                 limit: 20
             }
         }).pipe(
-            map((response) => GifMapper.mapGifsResponseToGifs(response))
+            map((response) => GifMapper.mapGifsResponseToGifs(response)),
+            tap((gifs) => {
+                this.searchHistory.update((history) => ({
+                    ...history,
+                    [query.toLocaleLowerCase()]: gifs
+                }))
+            })
         )
+    }
+
+    //==========================================//
+    //  Metodo para buscar en cache una query   //
+    //==========================================//
+    getHistoryGif(query: string): Gif[]{
+        return this.searchHistory()[query] ?? [];
     }
 }
