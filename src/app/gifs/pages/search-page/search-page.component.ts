@@ -19,9 +19,8 @@ export default class SearchPageComponent {
 
     onBuscarGif(query: string){
         this.gifService.searchGifs(query).subscribe({
-            next: (response: GifsResponse) => {
-                const gifs = GifMapper.mapGifsResponseToGifs(response);
-                this.gifSearch.set(gifs);
+            next: (response: Gif[]) => {
+                this.gifSearch.set(response);
             },
             error: (error: unknown) => {
                 if(error instanceof Error){

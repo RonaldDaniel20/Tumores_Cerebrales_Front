@@ -4,7 +4,7 @@ import { environment } from "../../../environments/environment"
 import { GifsResponse } from "../interfaces/gifs-request.interface";
 import { Gif } from "../interfaces/gif.interface";
 import { GifMapper } from "../mapper/gif.mapper";
-import { finalize, Observable } from "rxjs";
+import { finalize, map, Observable } from "rxjs";
 
 
 @Injectable({
@@ -49,7 +49,7 @@ export class GifService {
     //  Metodo para buscar un GIF en la api   //
     //========================================//
 
-    searchGifs(query: string): Observable<GifsResponse>{
+    searchGifs(query: string): Observable<Gif[]>{
         const url = `${GifService.URLBASE}/gifs/search`;
 
         return this.http.get<GifsResponse>(url, {
@@ -58,6 +58,8 @@ export class GifService {
                 q: query,
                 limit: 20
             }
-        })
+        }).pipe(
+            map((response) => GifMapper.mapGifsResponseToGifs(response))
+        )
     }
 }
