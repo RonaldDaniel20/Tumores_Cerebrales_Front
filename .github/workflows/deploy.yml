@@ -10,38 +10,38 @@ permissions:
 
 jobs:
   build_and_deploy:
-  runs_on: ubuntu-latest
-  steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
-      with:
-        node-version: '20'
+    runs_on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
     
-    - name: Instalar dependencias
-      run: npm install
+      - name: Instalar dependencias
+        run: npm install
     
-    - name: Inject Environments
-      run: | 
-        mkdir -p src/environments
-        cat <<EOF>> src/environments/environments.ts
-        export export const environment = {
-          production: true,
-          apiUrl: '${{ vars.APIURL}}',
-          apikeyGif:'${{ secrets.APIKEYGIF }}',
-          gifUrl : 'https://api.giphy.com/v1'
-        };
-        EOF
+      - name: Inject Environments
+        run: | 
+          mkdir -p src/environments
+          cat <<EOF>> src/environments/environments.ts
+          export export const environment = {
+            production: true,
+            apiUrl: '${{ vars.APIURL}}',
+            apikeyGif:'${{ secrets.APIKEYGIF }}',
+            gifUrl : 'https://api.giphy.com/v1'
+          };
+          EOF
 
-    - name: Build app
-      run: npm run build -- --configuration production  --base-href=/Tumores_Cerebrales_Front/
+      - name: Build app
+        run: npm run build -- --configuration production  --base-href=/Tumores_Cerebrales_Front/
 
-    - name: Configurar GitHub pages
-      uses: actions/configure-pages@v5
-    
-    - name: Subir archivos compilados
-      uses: actions/upload-pages-artifact@v3
-      with:
-        path: 'dist/my-app/browser'
-    - name: Deploy To GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v4
+      - name: Configurar GitHub pages
+        uses: actions/configure-pages@v5
+      
+      - name: Subir archivos compilados
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'dist/my-app/browser'
+      - name: Deploy To GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
