@@ -40,11 +40,8 @@ export class SubirArchivo {
                 this.prediccion.set(response)
 
             },
-            error: (err: unknown ) => {
-                if(err instanceof Error){
-                    console.error(err);
-                    this.notificationService.mostrarInformacion('Ocurrió un error al procesar la imagen', 'error');
-                }
+            error: (err) => {
+                this.notificationService.mostrarInformacion(err.detail, "error");
                 this.limpiarCampos()
             }
         })
